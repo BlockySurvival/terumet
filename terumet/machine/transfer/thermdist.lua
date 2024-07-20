@@ -25,7 +25,7 @@ function base_tdist.init(pos)
     inv:set_size('fuel', 1)
     inv:set_size('battery', 1)
     inv:set_size('out', 1)
-    inv:set_size('upgrade', 2)
+    inv:set_size('upgrade', 3)
     local init_box = {
         class = base_tdist.nodedef._terumach_class,
         state = base_tdist.STATE.IDLE,
@@ -102,7 +102,7 @@ base_tdist.nodedef = base_mach.nodedef{
     -- terumet machine class data
     _terumach_class = {
         name = 'Thermal Distributor',
-        valid_upgrades = terumet.valid_upgrade_sets(),
+        valid_upgrades = terumet.valid_upgrade_sets{'tubelib'},
         timer = 1.0,
         fsdef = FSDEF,
         default_heat_xfer = base_mach.HEAT_XFER_MODE.ACCEPT,

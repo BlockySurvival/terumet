@@ -23,7 +23,7 @@ local FSDEF = {
 function base_tbox.init(pos)
     local meta = minetest.get_meta(pos)
     local inv = meta:get_inventory()
-    inv:set_size('upgrade', 2)
+    inv:set_size('upgrade', 3)
     inv:set_size('fuel', 1)
     inv:set_size('battery', 1)
     local init_box = {
@@ -106,7 +106,7 @@ base_tbox.nodedef = base_mach.nodedef{
     -- terumet machine class data
     _terumach_class = {
         name = 'Thermobox',
-        valid_upgrades = terumet.valid_upgrade_sets(),
+        valid_upgrades = terumet.valid_upgrade_sets{'tubelib'},
         timer = 1.0,
         fsdef = FSDEF,
         default_heat_xfer = base_mach.HEAT_XFER_MODE.ACCEPT,

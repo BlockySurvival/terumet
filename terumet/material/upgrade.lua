@@ -68,6 +68,7 @@ terumet.register_machine_upgrade('cheat', 'Infinite Heat Upgrade', 'Testing or c
 local SETS = {
     ALL={cheat=1, max_heat=1, heat_xfer=1, speed_up=1},
     heater={gen_up=1},
+    tubelib={tubelib=1},
     input={ext_input=1, ext_both=1, tubelib=1},
     output={ext_output=1, ext_both=1, tubelib=1},
     crystal={cryst=1, tmcrys=1},

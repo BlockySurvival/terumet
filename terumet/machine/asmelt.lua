@@ -122,6 +122,8 @@ function base_asm.do_processing(smelter, dt)
     end
 end
 
+local unified_inventory_exists = core.get_modpath("unified_inventory")
+
 function base_asm.check_new_processing(smelter)
     if smelter.state ~= base_asm.STATE.IDLE then return end
     local in_inv, in_list = base_mach.get_input(smelter)
@@ -136,8 +138,14 @@ function base_asm.check_new_processing(smelter)
         if recipe.flux > 0 or smelter.zero_flux_recipes then
             local sources_count = 0
             for i = 1,#recipe.input do
-                if in_inv:contains_item(in_list, recipe.input[i]) then
-                    sources_count = sources_count + 1
+                local possible_items = unified_inventory_exists
+                    and unified_inventory.get_matching_items(recipe.input[i])
+                    or { [recipe.input[i]] = true }
+                for possible_item,_ in pairs(possible_items) do
+                    if in_inv:contains_item(in_list, possible_item) then
+                        sources_count = sources_count + 1
+                        break
+                    end
                 end
             end
             if sources_count == #recipe.input then
@@ -154,7 +162,15 @@ function base_asm.check_new_processing(smelter)
         else
             smelter.state = base_asm.STATE.ALLOYING
             for _, consumed_source in ipairs(matched_recipe.input) do
-                in_inv:remove_item(in_list, consumed_source)
+                local possible_items = unified_inventory_exists
+                    and unified_inventory.get_matching_items(consumed_source)
+                    or { [consumed_source] = true }
+                for possible_item,_ in pairs(possible_items) do
+                    if in_inv:contains_item(in_list, possible_item) then
+                        in_inv:remove_item(in_list, possible_item)
+                        break
+                    end
+                end
             end
             smelter.state_time = matched_recipe.time
             smelter.inv:set_stack('result', 1, result)
